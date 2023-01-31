@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 
-from covid19.models.country_daily_stats import CountryDailyStats # pylint: disable=import-error
+from covid19.models.country_daily_stats import CountryDailyStats  # pylint: disable=import-error
 
 logger = logging.getLogger('django')
 
@@ -13,6 +13,8 @@ logger = logging.getLogger('django')
 @api_view(['GET'])
 def death_percentage(request):
     country = request.GET.get('country', '')
+    logger.info(f'Getting deaths to confirmed ratio for {country}')
+
     last_day_stats = CountryDailyStats.objects.filter(
         country=country).latest('date')
 

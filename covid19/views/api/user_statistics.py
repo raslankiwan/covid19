@@ -1,11 +1,12 @@
 # pylint: disable=import-error
 import logging
 
-import requests
+from django.forms.models import model_to_dict
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 
+from covid19.models.country_daily_stats import CountryDailyStats
 from covid19.models.user_setting import UserSetting
 
 logger = logging.getLogger('django')
@@ -15,15 +16,16 @@ logger = logging.getLogger('django')
 @api_view(['GET'])
 def user_statistics(request):
     user_id = request.user.id
-    start_date = request.GET.get('startDate', '')
-    end_date = request.GET.get('endDate', '')
+
+    logger.info(f'Getting countries summary for user {user_id}')
 
     user_setting = UserSetting.objects.get(user_id=user_id)
-    result = {}
     countries = user_setting.get_countries()
-    for country in countries:
-        r = requests.get(
-            f'https://api.covid19api.com/country/{country}?from={start_date}&to={end_date}').json()
-        result[country] = r
 
-    return JsonResponse({'result': result})
+    all_country_stats = []
+    for country in countries:
+        country_stats = CountryDailyStats.objects.filter(
+            country=country).latest('date')
+        all_country_stats.append(model_to_dict(country_stats))
+
+    return JsonResponse({'result': all_country_stats})
