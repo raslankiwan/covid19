@@ -1,11 +1,9 @@
-"""Login View"""
 import json
 import logging
 
 from django.contrib.auth import authenticate, login
 from django.forms.models import model_to_dict
 from django.http import HttpResponse, JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
@@ -14,7 +12,6 @@ from rest_framework.permissions import AllowAny
 logger = logging.getLogger(__name__)
 
 
-@csrf_exempt
 @api_view(['POST'])
 @permission_classes((AllowAny, ))
 def login_view(request):
@@ -25,7 +22,6 @@ def login_view(request):
 
     user = authenticate(request, username=username, password=password)
 
-    logger.info(request)
     if user is not None:
         token = Token.objects.create(user=user)
 
