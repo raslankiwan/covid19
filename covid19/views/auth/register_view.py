@@ -8,7 +8,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('django')
 
 
 @api_view(['POST'])

@@ -20,11 +20,11 @@ from rest_framework import routers
 from covid19.views.auth.login_view import login_view
 from covid19.views.auth.logout_view import logout_view
 from covid19.views.auth.register_view import register_view
-from covid19.views.api.test import test
 from covid19.views.api.add_country import add_country
 from covid19.views.api.user_statistics import user_statistics
 from covid19.views.api.death_percentage import death_percentage
 from covid19.views.api.top_countries import top_countries
+from covid19.views.api.fill_country_stats import fill_country_stats
 
 
 router = routers.DefaultRouter()
@@ -33,9 +33,9 @@ urlpatterns = [
     path("auth/register", register_view),
     path("auth/login", login_view),
     path("auth/logout", logout_view),
-    path("api/test", test),
     path("api/add-country", add_country),
     path("api/user-statistics", user_statistics),
     path("api/death-percentage", death_percentage),
     path("api/top-countries", top_countries),
+    path("api/fill-stats", fill_country_stats),
 ]

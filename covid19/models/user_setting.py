@@ -1,7 +1,7 @@
 import ast
 import json
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User  # pylint: disable=imported-auth-user
 from django.db import models
 
 
@@ -10,7 +10,6 @@ class UserSetting(models.Model):
     countries = models.TextField(max_length=200)
 
     def set_countries(self, lst):
-        ast.dump(node)
         self.countries = json.dumps(lst)
 
     def get_countries(self):

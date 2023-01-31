@@ -1,3 +1,4 @@
+# pylint: disable=import-error
 import logging
 
 import requests
@@ -7,7 +8,7 @@ from rest_framework.decorators import api_view
 
 from covid19.models.user_setting import UserSetting
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('django')
 
 
 @csrf_exempt

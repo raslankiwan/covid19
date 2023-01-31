@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from rest_framework import status
 from rest_framework.decorators import api_view
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('django')
 
 
 @api_view(['POST'])

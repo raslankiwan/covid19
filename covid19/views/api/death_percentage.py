@@ -4,9 +4,9 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 
-from covid19.models.country_daily_stats import CountryDailyStats
+from covid19.models.country_daily_stats import CountryDailyStats # pylint: disable=import-error
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('django')
 
 
 @csrf_exempt
