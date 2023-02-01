@@ -30,12 +30,12 @@ from covid19.views.api.fill_country_stats import fill_country_stats
 router = routers.DefaultRouter()
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("auth/register", register_view),
-    path("auth/login", login_view),
-    path("auth/logout", logout_view),
-    path("api/add-country", add_country),
-    path("api/user-statistics", user_statistics),
-    path("api/death-percentage", death_percentage),
-    path("api/top-countries", top_countries),
-    path("api/fill-stats", fill_country_stats),
+    path("register/", register_view),
+    path("login/", login_view),
+    path("logout/", logout_view),
+    path("add-country/", add_country),
+    path("user-statistics/", user_statistics),
+    path("death-percentage/", death_percentage),
+    path("top-countries/", top_countries),
+    path("fill-stats/", fill_country_stats),
 ]

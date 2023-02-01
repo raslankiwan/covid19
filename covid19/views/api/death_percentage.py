@@ -1,7 +1,8 @@
 import logging
 
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework import status
 from rest_framework.decorators import api_view
 
 from covid19.models.country_daily_stats import CountryDailyStats  # pylint: disable=import-error
@@ -15,8 +16,11 @@ def death_percentage(request):
     country = request.GET.get('country', '')
     logger.info(f'Getting deaths to confirmed ratio for {country}')
 
-    last_day_stats = CountryDailyStats.objects.filter(
-        country=country).latest('date')
+    try:
+        last_day_stats = CountryDailyStats.objects.filter(
+            country=country).latest('date')
+    except CountryDailyStats.DoesNotExist:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 
     if last_day_stats is not None:
         death_to_confirmed_ratio = (

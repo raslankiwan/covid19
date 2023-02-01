@@ -14,11 +14,9 @@ logger = logging.getLogger('django')
 @api_view(['POST'])
 @permission_classes((AllowAny, ))
 def register_view(request):
-    data = json.loads(request.body.decode("utf-8"))
-
-    username = data['username']
-    email = data['email']
-    password = data['password']
+    username = request.data.get('username', '')
+    email = request.data.get('email', '')
+    password = request.data.get('password', '')
     User.objects.exists()
     if not User.objects.filter(username=username).exists():
         user = User.objects.create_user(

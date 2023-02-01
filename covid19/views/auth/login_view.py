@@ -15,10 +15,9 @@ logger = logging.getLogger('django')
 @api_view(['POST'])
 @permission_classes((AllowAny, ))
 def login_view(request):
-    data = json.loads(request.body.decode("utf-8"))
+    username = request.data.get('username', '')
+    password = request.data.get('password', '')
 
-    username = data['username']
-    password = data['password']
 
     user = authenticate(request, username=username, password=password)
 
