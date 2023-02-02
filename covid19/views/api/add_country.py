@@ -5,7 +5,7 @@ import logging
 from django.forms.models import model_to_dict
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 
 from covid19.models.user_setting import UserSetting
 from covid19.utils import fill_stats_by_country
@@ -13,26 +13,27 @@ from covid19.utils import fill_stats_by_country
 logger = logging.getLogger(__name__)
 
 
-@csrf_exempt
-@api_view(['POST'])
-def add_country(request):
-    user_id = request.user.id
+class AddCountryView(APIView):
 
-    countries = request.data.get('countries', [])
+    @csrf_exempt
+    def post(self, request):
+        user_id = request.user.id
 
-    try:
-        user_setting = UserSetting.objects.get(user_id=user_id)
-    except UserSetting.DoesNotExist:
-        user_setting = None
+        countries = request.data.get('countries', [])
 
-    if user_setting is None:
-        for country in countries:
-            fill_stats_by_country(country)
+        try:
+            user_setting = UserSetting.objects.get(user_id=user_id)
+        except UserSetting.DoesNotExist:
+            user_setting = None
 
-        user_setting = UserSetting.objects.create(
-            user_id=request.user, countries=json.dumps(countries))
-    else:
-        for country in countries:
-            user_setting.add_country(country)
-        user_setting.save()
-    return JsonResponse({'user_setting': model_to_dict(user_setting)})
+        if user_setting is None:
+            for country in countries:
+                fill_stats_by_country(country)
+
+            user_setting = UserSetting.objects.create(
+                user_id=request.user, countries=json.dumps(countries))
+        else:
+            for country in countries:
+                user_setting.add_country(country)
+            user_setting.save()
+        return JsonResponse({'user_setting': model_to_dict(user_setting)})

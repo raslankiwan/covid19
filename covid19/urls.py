@@ -17,25 +17,25 @@ from django.contrib import admin
 from django.urls import path
 from rest_framework import routers
 
-from covid19.views.auth.login_view import login_view
-from covid19.views.auth.logout_view import logout_view
-from covid19.views.auth.register_view import register_view
-from covid19.views.api.add_country import add_country
-from covid19.views.api.user_statistics import user_statistics
-from covid19.views.api.death_percentage import death_percentage
-from covid19.views.api.top_countries import top_countries
+from covid19.views.auth.login_view import Login
+from covid19.views.auth.logout_view import Logout
+from covid19.views.auth.register_view import Register
+from covid19.views.api.add_country import AddCountryView
+from covid19.views.api.user_statistics import UserStats
+from covid19.views.api.death_percentage import DeathPercentage
+from covid19.views.api.top_countries import TopCountries
 from covid19.views.api.fill_country_stats import fill_country_stats
 
 
 router = routers.DefaultRouter()
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("register/", register_view),
-    path("login/", login_view),
-    path("logout/", logout_view),
-    path("add-country/", add_country),
-    path("user-statistics/", user_statistics),
-    path("death-percentage/", death_percentage),
-    path("top-countries/", top_countries),
+    path("register/", Register.as_view()),
+    path("login/", Login.as_view()),
+    path("logout/", Logout.as_view()),
+    path("add-country/", AddCountryView.as_view()),
+    path("user-statistics/", UserStats.as_view()),
+    path("death-percentage/", DeathPercentage.as_view()),
+    path("top-countries/", TopCountries.as_view()),
     path("fill-stats/", fill_country_stats),
 ]
