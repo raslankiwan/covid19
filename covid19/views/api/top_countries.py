@@ -23,11 +23,11 @@ class TopCountries(APIView):
         logger.info(f'Getting top {limit} countries for user {user_id}')
 
         user_setting = UserSetting.objects.get(user_id=user_id)
-        countries = user_setting.get_countries()
+        countries = user_setting.countries.all()
         all_country_stats = []
         for country in countries:
             country_stats = CountryDailyStats.objects.filter(
-                country=country).latest('date')
+                country=country.id).latest('date')
             all_country_stats.append(model_to_dict(country_stats))
 
         all_country_stats.sort(key=lambda x: x[status], reverse=True)

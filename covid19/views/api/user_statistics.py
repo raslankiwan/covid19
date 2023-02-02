@@ -20,7 +20,7 @@ class UserStats(APIView):
         logger.info(f'Getting countries summary for user {user_id}')
 
         user_setting = UserSetting.objects.get(user_id=user_id)
-        countries = user_setting.get_countries()
+        countries = user_setting.countries.all()
 
         all_country_stats = []
         for country in countries:
