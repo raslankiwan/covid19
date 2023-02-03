@@ -33,4 +33,4 @@ class AddCountryView(APIView):
                 fill_stats_by_country(country)
             user_setting.countries.add(country_model)
             user_setting.save()
-        return JsonResponse({'user_setting': user_setting})
+        return JsonResponse({'result': 'success'} )
