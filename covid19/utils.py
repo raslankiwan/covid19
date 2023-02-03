@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 import requests
 
 from covid19.models.country_daily_stats import CountryDailyStats
@@ -21,10 +22,14 @@ def fill_stats_by_country(country_name):
 
 
 def fill_all_countries():
+    yesterday_datetime = datetime.now() - timedelta(days=1)
+    yesterday_datetime = yesterday_datetime.strftime("%Y-%m-%dT00:00:00Z")
+    today_datetime = datetime.now().strftime("%Y-%m-%dT00:00:00Z")
+
     countries = Country.objects.all()
     for country in countries:
         country_data = requests.get(
-            f'https://api.covid19api.com/country/{country.name}').json()
+            f'https://api.covid19api.com/country/{country.name}?from={yesterday_datetime}&to={today_datetime}').json()
         for item in country_data:
             try:
                 daily_stats = CountryDailyStats.objects.get(
