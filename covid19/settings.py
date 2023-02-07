@@ -54,7 +54,7 @@ MIDDLEWARE = [
 ]
 
 CRONJOBS = [
-    ('0 10 * * *', 'django.core.management.call_command', ['fill']) # Run everyday at 10:00AM
+    ('0 10 * * *', 'django.core.management.call_command', ['fill_all_countries']) # Run everyday at 10:00AM
 ]
 
 ROOT_URLCONF = 'covid19.urls'
@@ -109,6 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': (

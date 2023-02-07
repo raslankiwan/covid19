@@ -1,36 +1,32 @@
 # pylint: disable=import-error
 import logging
 
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+from rest_framework import status
+from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from covid19.models.user_setting import UserSetting
-from covid19.models.country import Country
-from covid19.utils import fill_stats_by_country
+from covid19.clients.covid19_client import Covid19Client
+from covid19.models import Country
+from covid19.serializers import CountrySerializer
 
 logger = logging.getLogger(__name__)
 
 
 class AddCountryView(APIView):
 
-    @csrf_exempt
     def post(self, request):
-        user_id = request.user.id
-
         countries = request.data.get('countries', [])
 
-        try:
-            user_setting = UserSetting.objects.get(user_id=user_id)
-        except UserSetting.DoesNotExist:
-            user_setting = UserSetting.objects.create(user_id=request.user)
-
-        for country in countries:
+        for country_name in countries:
             try:
-                country_model = Country.objects.get(name=country)
+                country = Country.objects.get(name=country_name)
+                country.users.add(request.user)
+                country.save()
             except Country.DoesNotExist:
-                country_model = Country.objects.create(name=country)
-                fill_stats_by_country(country)
-            user_setting.countries.add(country_model)
-            user_setting.save()
-        return JsonResponse({'result': 'success'} )
+                Covid19Client().fill_stats_by_country(country_name)
+                country = CountrySerializer(
+                    data={"name": country_name, "users": [request.user.id]})
+                if (not country.is_valid()):
+                    return Response(country.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(status=status.HTTP_201_CREATED)

@@ -17,25 +17,18 @@ from django.contrib import admin
 from django.urls import path
 from rest_framework import routers
 
-from covid19.views.auth.login_view import Login
-from covid19.views.auth.logout_view import Logout
-from covid19.views.auth.register_view import Register
 from covid19.views.api.add_country import AddCountryView
-from covid19.views.api.user_statistics import UserStats
 from covid19.views.api.death_percentage import DeathPercentage
 from covid19.views.api.top_countries import TopCountries
-from covid19.views.api.fill_country_stats import fill_country_stats
-
+from covid19.views.auth.login_view import Login
+from covid19.views.auth.register_view import Register
 
 router = routers.DefaultRouter()
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("register/", Register.as_view()),
     path("login/", Login.as_view()),
-    path("logout/", Logout.as_view()),
     path("add-country/", AddCountryView.as_view()),
-    path("user-statistics/", UserStats.as_view()),
     path("death-percentage/", DeathPercentage.as_view()),
     path("top-countries/", TopCountries.as_view()),
-    path("fill-stats/", fill_country_stats),
 ]

@@ -1,12 +1,15 @@
+# pylint: disable=imported-auth-user
+# pylint: disable=import-error
 import logging
 
-from django.contrib.auth.models import User  # pylint: disable=imported-auth-user
-from django.forms.models import model_to_dict
-from django.http import JsonResponse
-from rest_framework.authtoken.models import Token
+from django.contrib.auth.models import User
+from rest_framework import status
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from covid19.serializers import UserSerializer
 
 logger = logging.getLogger('django')
 
@@ -16,19 +19,11 @@ class Register(APIView):
 
     def post(self, request):
         username = request.data.get('username', '')
-        email = request.data.get('email', '')
-        password = request.data.get('password', '')
         if not User.objects.filter(username=username).exists():
-            user = User.objects.create_user(
-                username, email, password)
-
-            token = Token.objects.create(user=user)
-
-            return JsonResponse({
-                'token': str(token),
-                'user': model_to_dict(user)
-            })
+            user = UserSerializer(data=request.data)
+            if (user.is_valid()):
+                user.save()
+                return Response(user.data, status=status.HTTP_201_CREATED)
+            return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
-            return JsonResponse({
-                'error': 'User already exists'
-            })
+            return Response(status=status.HTTP_400_BAD_REQUEST)
