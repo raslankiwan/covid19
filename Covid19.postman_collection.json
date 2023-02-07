@@ -35,7 +35,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"raslan\",\n    \"email\": \"ras@test.com\",\n    \"password\": \"ras123\"\n}",
+							"raw": "{\n    \"username\": \"ras\",\n    \"email\": \"ras@test.com\",\n    \"password\": \"ras1234\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -75,6 +75,21 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "raslank",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "ras123",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -84,17 +99,8 @@
 								"disabled": true
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"username\": \"raslan\",\n    \"password\": \"ras123\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/auth/login/",
+							"raw": "http://127.0.0.1:8000/login/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -104,47 +110,7 @@
 							],
 							"port": "8000",
 							"path": [
-								"auth",
 								"login",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Logout",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "TOKEN {{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"user_name\": \"john\",\n     \"email\": \"john@test.com\",\n      \"password\": \"john123\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://127.0.0.1:8000/auth/logout/",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8000",
-							"path": [
-								"auth",
-								"logout",
 								""
 							]
 						}
@@ -157,41 +123,6 @@
 			"name": "Country Stats",
 			"item": [
 				{
-					"name": "user-stats",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "TOKEN {{token}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "http://127.0.0.1:8000/user-statistics/?date=2020-03-31",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8000",
-							"path": [
-								"user-statistics",
-								""
-							],
-							"query": [
-								{
-									"key": "date",
-									"value": "2020-03-31"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Death Percentage",
 					"request": {
 						"method": "GET",
@@ -203,7 +134,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://127.0.0.1:8000/death-percentage?country=palestine",
+							"raw": "http://127.0.0.1:8000/death-percentage?country=oman",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -218,7 +149,7 @@
 							"query": [
 								{
 									"key": "country",
-									"value": "palestine"
+									"value": "oman"
 								}
 							]
 						}
@@ -237,7 +168,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://127.0.0.1:8000/top-countries/?status=confirmed&limit=2&date=2020-03-31",
+							"raw": "http://127.0.0.1:8000/top-countries/?status=deaths&limit=5",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -253,54 +184,12 @@
 							"query": [
 								{
 									"key": "status",
-									"value": "confirmed"
+									"value": "deaths"
 								},
 								{
 									"key": "limit",
-									"value": "2"
-								},
-								{
-									"key": "date",
-									"value": "2020-03-31"
+									"value": "5"
 								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Fill stats",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "TOKEN {{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"country\": \"south-africa\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://127.0.0.1:8000/fill-stats/",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8000",
-							"path": [
-								"fill-stats",
-								""
 							]
 						}
 					},
@@ -321,7 +210,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"countries\": [ \"jordan\", \"south-africa\"]\n}",
+					"raw": "{\n    \"countries\": [   \"palestine\" , \"spain\", \"italy\",\"oman\"]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
