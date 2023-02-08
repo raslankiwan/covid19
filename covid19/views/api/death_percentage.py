@@ -19,7 +19,10 @@ class DeathPercentage(APIView):
 
         try:
             try:
-                country_id = Country.objects.get(name=country).id
+                country = Country.objects.get(name=country)
+                if not request.user in country.users.all():
+                    return Response({'error': 'user is not subscribed to this country'})
+
             except Country.DoesNotExist:
                 return Response({'error': 'Country not found'})
 

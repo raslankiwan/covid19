@@ -21,15 +21,22 @@ class UserSerializer(serializers.ModelSerializer):
 class CountrySerializer(serializers.ModelSerializer):
     class Meta:
         model = Country
-        fields = ['name', 'users']
+        fields = ['name']
+        optional_fields = ['users']
 
     def create(self, validated_data):
-        users = validated_data.pop("users")
+        user = self.context.get('user')
         country = Country.objects.create(**validated_data)
-        for user in users:
-            country.users.add(user)
+        country.users.add(user)
         country.save()
         return country
+
+    def update(self, instance, validated_data):
+        user = self.context.get('user')
+        instance.users.add(user)
+        instance.save()
+
+        return instance
 
 
 class TopCountriesSerializer(serializers.Serializer):

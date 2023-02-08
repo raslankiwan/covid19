@@ -19,14 +19,24 @@ class AddCountryView(APIView):
 
         for country_name in countries:
             try:
-                country = Country.objects.get(name=country_name)
-                country.users.add(request.user)
-                country.save()
+                country_instance = Country.objects.get(name=country_name)
+
+                country = CountrySerializer(
+                    country_instance,
+                    data={"name": country_name}, context={"user": request.user})
+
+                if country.is_valid():
+                    country.save()
+                else:
+                    return Response(country.errors, status=status.HTTP_400_BAD_REQUEST)
+
             except Country.DoesNotExist:
                 Covid19Client().fill_stats_by_country(country_name)
                 country = CountrySerializer(
-                    data={"name": country_name, "users": [request.user.id]})
-                if (not country.is_valid()):
+                    data={"name": country_name}, context={"user": request.user})
+                if country.is_valid():
+                    country.save()
+                else:
                     return Response(country.errors, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(status=status.HTTP_201_CREATED)
